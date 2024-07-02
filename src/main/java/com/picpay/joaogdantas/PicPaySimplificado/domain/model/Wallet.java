@@ -1,5 +1,6 @@
 package com.picpay.joaogdantas.PicPaySimplificado.domain.model;
 
+import com.picpay.joaogdantas.PicPaySimplificado.domain.model.dto.CreateUserDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,4 +24,8 @@ public class Wallet {
 
     @OneToOne(mappedBy = "wallet")
     private User user;
+
+    public Wallet(Double balance){
+        this.balance = balance;
+    }
 }
