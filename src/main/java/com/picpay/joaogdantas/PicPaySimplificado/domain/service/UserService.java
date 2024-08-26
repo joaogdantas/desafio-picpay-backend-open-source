@@ -1,5 +1,6 @@
 package com.picpay.joaogdantas.PicPaySimplificado.domain.service;
 
+import com.picpay.joaogdantas.PicPaySimplificado.domain.exceptions.UserNotFoundException;
 import com.picpay.joaogdantas.PicPaySimplificado.domain.model.User;
 import com.picpay.joaogdantas.PicPaySimplificado.domain.model.Wallet;
 import com.picpay.joaogdantas.PicPaySimplificado.domain.model.dto.CreateUserDTO;
@@ -24,17 +25,21 @@ public class UserService {
 
     public User saveUser(CreateUserDTO createUserDTO){
         User newUser = new User(createUserDTO);
+        Wallet newWallet = new Wallet(0.0);
+
+        newUser.setWallet(newWallet);
+
         return userRepository.save(newUser);
     }
 
     public User returnUserByName(String name){
         return userRepository.findByName(name)
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com o nome " + name));
+                .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado com o nome " + name));
     }
 
     public ReturnSensitiveInformationUserDTO findSensitiveInformationUserById(Long id){
         return userRepository.findById(id)
-                .map(personData -> new ReturnSensitiveInformationUserDTO(personData.getId(), personData.getName(), personData.getCpf(), personData.getEmail(), personData.getPassword(), personData.getUserType()))
+                .map(personData -> new ReturnSensitiveInformationUserDTO(personData.getId(), personData.getName(), personData.getCpf(), personData.getEmail(), personData.getPassword(), personData.getUserType(), personData.getWallet().getBalance()))
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com o id " + id));
     }
 
@@ -47,7 +52,7 @@ public class UserService {
     public List<ReturnSensitiveInformationUserDTO> findAllSensitiveInformationUsers(){
         return userRepository.findAll()
                 .stream()
-                .map(personData -> new ReturnSensitiveInformationUserDTO(personData.getId(), personData.getName(), personData.getCpf(), personData.getEmail(), personData.getPassword(), personData.getUserType()))
+                .map(personData -> new ReturnSensitiveInformationUserDTO(personData.getId(), personData.getName(), personData.getCpf(), personData.getEmail(), personData.getPassword(), personData.getUserType(), personData.getWallet().getBalance()))
                 .collect(Collectors.toList());
     }
 
