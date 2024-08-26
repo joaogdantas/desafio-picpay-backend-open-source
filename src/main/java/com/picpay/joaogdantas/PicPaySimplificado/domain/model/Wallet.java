@@ -1,6 +1,5 @@
 package com.picpay.joaogdantas.PicPaySimplificado.domain.model;
 
-import com.picpay.joaogdantas.PicPaySimplificado.domain.model.dto.CreateUserDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,9 +14,9 @@ import java.util.UUID;
 @EqualsAndHashCode(of = "id")
 public class Wallet {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", unique = true, nullable = false)
-    private UUID id;
+    private Integer id;
 
     @Column(name = "balance", nullable = false)
     private Double balance;

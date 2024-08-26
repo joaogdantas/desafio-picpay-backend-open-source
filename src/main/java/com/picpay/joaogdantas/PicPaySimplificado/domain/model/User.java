@@ -4,8 +4,6 @@ import com.picpay.joaogdantas.PicPaySimplificado.domain.model.dto.CreateUserDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.UUID;
-
 @Entity(name = "user")
 @Table(name = "users")
 @Getter
@@ -17,7 +15,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", unique = true, nullable = false)
-    private Long id;
+    private Integer id;
 
     @Column(name = "name", nullable = false)
     private String name;
